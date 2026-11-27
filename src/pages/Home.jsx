@@ -1,16 +1,22 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { subjectColor } from '../lib/colors'
 import { notes, searchNotes, subjects } from '../lib/notes'
 
 function NoteLink({ note, showSubject }) {
+  const color = subjectColor(subjects, note.subjectSlug)
   return (
     <Link
       to={note.path}
-      className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3 transition hover:border-indigo-400 hover:shadow-sm dark:border-stone-800 dark:bg-stone-900 dark:hover:border-indigo-500"
+      className={`flex items-center justify-between gap-3 rounded-lg border border-l-4 border-stone-200 bg-white px-3 py-2.5 shadow-sm transition hover:shadow-md dark:border-stone-800 dark:bg-stone-900 ${color.card}`}
     >
       <span className="font-medium">{note.title}</span>
-      {showSubject ? <span className="shrink-0 text-xs text-stone-500">{note.subject}</span> : <span className="text-stone-400">→</span>}
+      {showSubject ? (
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${color.badge}`}>{note.subject}</span>
+      ) : (
+        <span className="text-stone-400">→</span>
+      )}
     </Link>
   )
 }
@@ -20,10 +26,12 @@ export default function Home() {
   const results = searchNotes(query)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">My notes</h1>
-        <p className="text-sm text-stone-500">
+        <h1 className="bg-linear-to-r from-indigo-600 via-fuchsia-600 to-orange-500 bg-clip-text text-xl font-bold tracking-tight text-transparent sm:text-2xl">
+          My notes
+        </h1>
+        <p className="text-xs text-stone-500">
           {notes.length} {notes.length === 1 ? 'topic' : 'topics'} across {subjects.length}{' '}
           {subjects.length === 1 ? 'subject' : 'subjects'}
         </p>
@@ -34,7 +42,7 @@ export default function Home() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search notes… e.g. reduce"
-        className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-stone-700 dark:bg-stone-900"
+        className="w-full rounded-lg border border-fuchsia-200 bg-white px-3 py-2 outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 dark:border-fuchsia-900 dark:bg-stone-900"
       />
 
       {query.trim() ? (
@@ -42,13 +50,13 @@ export default function Home() {
           {results.length ? (
             results.map((n) => <NoteLink key={n.path} note={n} showSubject />)
           ) : (
-            <p className="text-sm text-stone-500">No notes match “{query}”.</p>
+            <p className="text-xs text-stone-500">No notes match “{query}”.</p>
           )}
         </section>
       ) : (
         subjects.map((s) => (
-          <section key={s.subjectSlug} className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+          <section key={s.subjectSlug} className="space-y-2">
+            <h2 className={`text-xs font-bold uppercase tracking-widest ${subjectColor(subjects, s.subjectSlug).heading}`}>
               {s.subject}
             </h2>
             <div className="space-y-2">
