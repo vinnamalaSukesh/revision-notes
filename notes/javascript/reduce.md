@@ -29,8 +29,22 @@ array.reduce((acc, cur, index, array) => {
 
 **Group by**
 ```js
-people.reduce((acc, p) => {
+// input
+const people = [
+  { name: 'Ravi', city: 'Hyd' },
+  { name: 'Anu', city: 'Blr' },
+  { name: 'Kiran', city: 'Hyd' },
+]
+
+// code
+const byCity = people.reduce((acc, p) => {
   (acc[p.city] ||= []).push(p)
   return acc
-}, {})   // { Hyd: [...], Blr: [...] }
+}, {})
+
+// output
+{
+  Hyd: [{ name: 'Ravi', city: 'Hyd' }, { name: 'Kiran', city: 'Hyd' }],
+  Blr: [{ name: 'Anu', city: 'Blr' }],
+}
 ```
