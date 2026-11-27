@@ -33,7 +33,7 @@ export default function Home() {
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search notes… e.g. isolation"
+        placeholder="Search notes… e.g. reduce"
         className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-stone-700 dark:bg-stone-900"
       />
 
